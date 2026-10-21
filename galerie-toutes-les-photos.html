@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galerie Complète des Photos — Geoffrey Coaching</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Montserrat:ital,wght@0,800;0,900;1,900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #151c2c;
+      --border: #2a364f;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --green: #10b981;
+      --blue: #0ea5e9;
+      --orange: #f97316;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 30px 20px;
+      line-height: 1.5;
+    }
+    .header {
+      max-width: 1400px;
+      margin: 0 auto 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+    .header h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .header h1 span { color: var(--green); }
+    .header p { color: var(--muted); font-size: 0.85rem; }
+    
+    .section-title {
+      max-width: 1400px;
+      margin: 0 auto 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-left: 4px solid var(--green);
+      padding-left: 10px;
+    }
+
+    .grid {
+      max-width: 1400px;
+      margin: 0 auto 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-header {
+      padding: 10px 14px;
+      background: #0f1523;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .img-box {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      background: #090d16;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s;
+    }
+    .img-box img:hover {
+      transform: scale(1.03);
+    }
+    .card-footer {
+      padding: 10px 14px;
+      background: #101624;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Geoffrey Coaching • <span>Galerie de Toutes les Photos</span></h1>
+    <p>Inventaire brut de l'ensemble des fichiers image présents dans ton Google Drive</p>
+  </div>
+  <a href="https://drive.google.com/drive/folders/1zDpIKI40N9G_x6uhCY5oljopbU4Qw3Br?usp=sharing" target="_blank" style="background:#1e293b; color:#fff; text-decoration:none; padding:8px 14px; border-radius:8px; font-size:0.82rem; font-weight:600; border:1px solid var(--border);">📂 Ouvrir le Drive</a>
+</div>
+
+<div class="section-title">📸 Photos Principales (Racine du Drive)</div>
+<div class="grid" id="mainPhotosGrid"></div>
+
+<div class="section-title">📂 Photos du dossier "Circuit Abdos"</div>
+<div class="grid" id="abdosPhotosGrid"></div>
+
+<script>
+  const mainPhotos = [
+    { title: "Coaching EMS", id: "1mgYQ2BdYqpl4ILTxZVkzwoBjBL2YSTb5", file: "Coaching EMS.jpg" },
+    { title: "Coaching EMS (2)", id: "1P9i99h_tsUdTxNGCnGGio_9uIFp_K5gL", file: "Coaching EMS (2).jpg" },
+    { title: "Marathon Finisher", id: "1tueFpQADBJEQsNdgtCgmW9IArt-pXjHn", file: "Finisher Marathon Médaille.jpg" },
+    { title: "10k de Paris", id: "1Q4zbfOeKUmb3-NJe9Ps0zBz0HRIj05XD", file: "Photo pendant 10k de Paris.jpg" }
+  ];
+
+  const abdosPhotos = [
+    { title: "Couverture Circuit Abdos", id: "1FFUCe8IqQRHH_Gk_DSDCQSGj7odbjaM1", file: "17869765705806022.jpg" }
+  ];
+
+  function renderGrid(data, containerId) {
+    const container = document.getElementById(containerId);
+    data.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const thumbUrl = `https://drive.google.com/thumbnail?id=${item.id}&sz=w1000`;
+      
+      card.innerHTML = `
+        <div class="card-header">
+          <span>${item.title}</span>
+          <a href="https://drive.google.com/file/d/${item.id}/view" target="_blank" style="color:var(--blue); font-size:0.75rem; text-decoration:none;">Voir ↗</a>
+        </div>
+        <div class="img-box">
+          <img src="${thumbUrl}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x400/151c2c/94a3b8?text=Apercu+Indisponible'">
+        </div>
+        <div class="card-footer">
+          📁 ${item.file}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  renderGrid(mainPhotos, 'mainPhotosGrid');
+  renderGrid(abdosPhotos, 'abdosPhotosGrid');
+</script>
+
+</body>
+</html>
